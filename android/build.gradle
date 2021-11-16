@@ -1,0 +1,72 @@
+buildscript {
+    apply from: "versionPlugin/config.gradle"
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath deps.android_gradle_plugin
+    }
+}
+
+
+plugins {
+    id "com.sdk.versionplugin"
+}
+
+
+import groovy.xml.*
+
+allprojects {
+    repositories {
+        flatDir {
+            dirs "$webrtc_src/examples/androidapp/third_party/autobanh/lib"
+        }
+        google()
+        jcenter()
+        mavenCentral()
+    }
+    afterEvaluate { project ->
+        if (project.name == "AppRTCMobile") {
+            def file = rootProject.file(".idea/workspace.xml")
+            if (file.exists()) {
+                def root = new XmlSlurper().parse(rootProject.file(".idea/workspace.xml"))
+                def appRTCMobileNode = root.'**'.find { it.name() == 'configuration' && it.attributes().get('name') == 'AppRTCMobile' }
+                if (appRTCMobileNode != null) {
+                    def isUpdate = false
+                    def debuggerTypeNode = appRTCMobileNode.'**'.find { it.name() == 'option' && it.attributes().get('name') == 'DEBUGGER_TYPE' }
+                    if (debuggerTypeNode.@value != "Hybrid") {
+                        isUpdate = true
+                        debuggerTypeNode['@value'] = "Hybrid"
+                    }
+                    def webrtcSrcFile = new File(rootProject.ext.webrtc_src)
+                    def hybridNode = appRTCMobileNode.'**'.find { it.name() == 'Hybrid' }
+                    def startupCommandsNode = hybridNode.'**'.find { it.name() == 'startup_commands' }
+                    def startupCommandsAttrText = "settings set target.source-map '../../../' '${webrtcSrcFile.getCanonicalPath()}'"
+                    def startupCommandsText = "<startup_commands startup_commands_attr=\"${startupCommandsAttrText}\" />"
+                    if (startupCommandsNode == null) {
+                        isUpdate = true
+                        startupCommandsNode = new XmlSlurper().parseText(startupCommandsText)
+                        hybridNode.appendNode(startupCommandsNode)
+                    }
+                    if (isUpdate) {
+                        file.withWriter { outWriter ->
+                            XmlUtil.serialize(root, outWriter)
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+

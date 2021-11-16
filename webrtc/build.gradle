@@ -1,0 +1,56 @@
+import com.sdk.versionplugin.*
+
+apply plugin: 'com.android.library'
+def webrtc_path="$rootProject.rootDir/webrtc/webrtc_src/google"
+def webrtc_src="$webrtc_path/src"
+android {
+    compileSdkVersion BuildConfig.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion BuildConfig.minSdkVersion
+        targetSdkVersion BuildConfig.targetSdkVersion
+        versionCode 1
+        versionName '1.0.0'
+
+        sourceSets.main.java.srcDirs = [
+                "$webrtc_src/sdk/android/api",
+                "$webrtc_src/sdk/android/src/java",
+                "$webrtc_src/rtc_base/java/src",
+                "$webrtc_src/modules/audio_device/android/java/src",
+                "$rootProject.rootDir/webrtc/src/main/java",
+                "$webrtc_path/out/android/peerconnection_java/generated_java/input_srcjars",
+        ]
+
+        sourceSets.main.jniLibs.srcDirs = ["$webrtc_path/out/android/so"]
+        ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+    }
+    buildTypes {
+
+        debug {
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+        }
+
+        release {
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        doNotStrip "*/arm64-v8a/*.so"
+        doNotStrip "*/x86_64/*.so"
+    }
+}
+
+dependencies {
+    api 'com.google.code.findbugs:jsr305:3.0.2'
+    api "com.android.support:support-annotations:${AndroidSupport.androidSupportSdkVersion}"
+    api "androidx.annotation:annotation:1.1.0"
+}
