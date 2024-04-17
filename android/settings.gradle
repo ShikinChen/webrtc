@@ -1,2 +1,3 @@
+rootProject.name = "WebRTC"
 include ':AppRTCMobile', ':res', ':webrtc', ':webrtc_sdk'
 includeBuild 'versionPlugin'

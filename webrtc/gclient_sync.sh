@@ -10,13 +10,7 @@ MIRROR=$2
 ARGS=""
 
 if [ ! -n "$MIRROR" ]; then
-  MIRROR=agoralabx
-fi
-
-if [ "$MIRROR" == "agoralab" ]; then
-  echo ""
-  # cd /webrtc && gclient config --name src https://webrtc.bj2.agoralab.co/webrtc-mirror/src.git@65e8d9facab05de13634d777702b2c93288f8849
-  # ARGS="--patch-ref=https://chromium.googlesource.com/chromium/src/build.git@gitlab"
+  MIRROR=webrtc_android
 fi
 
 export PATH=$PATH:$WEBRTC_PATH/depot_tools
@@ -36,7 +30,7 @@ if [ -n "$1" ]; then
     fi
   fi
   if [ $1 = "init" ]; then
-    cd ${WEBRTC_PATH} && fetch --nohooks --with_branch_heads $MIRROR
+    cd ${WEBRTC_PATH} && fetch --nohooks $MIRROR
   else
     cd ${WEBRTC_PATH} && gclient sync -v -f -D --with_branch_heads $ARGS
   fi

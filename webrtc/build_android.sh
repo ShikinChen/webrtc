@@ -20,8 +20,16 @@ if [ ! -f "${ANDROID_BUILD_PATH}_bak" ]; then
   cp $ANDROID_BUILD_PATH ${ANDROID_BUILD_PATH}_bak
 fi
 
+BRANCH=$(cd $SRC_PATH && git status | grep "branch-heads" | awk -F '/' '{print $2}' | awk -F "'" '{print $1}')
+
+MIN_BRANCH=4664
+
 sed -i "/strip = /d" $ANDROID_BUILD_PATH
-sed -i "/         root_build_dir)/d" $ANDROID_BUILD_PATH
+
+if [ ${BRANCH} -gt ${MIN_BRANCH} ]; then
+  sed -i "/         root_build_dir)/d" $ANDROID_BUILD_PATH
+fi
+
 sed -i "/use_unstripped_as_runtime_outputs = android_unstripped_runtime_outputs/d" $ANDROID_BUILD_PATH
 
 LIB_OUT_PATH=$SHELL_PATH/out/android
@@ -41,4 +49,3 @@ if [ ! -d "$LIB_OUT_PATH/$abi" ]; then
   mkdir -p $LIB_OUT_PATH/$abi
 fi
 cp $OUT_PATH/$abi/libjingle_peerconnection_so.so $LIB_OUT_PATH/$abi/libjingle_peerconnection_so.so
-

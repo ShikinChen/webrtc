@@ -1,5 +1,4 @@
-import com.sdk.versionplugin.AndroidSupport
-import com.sdk.versionplugin.BuildConfig
+import com.sdk.versionplugin.*
 
 apply plugin: 'com.android.library'
 
@@ -25,6 +24,8 @@ android {
             sourceSets.main.jniLibs.srcDirs = ["$webrtc_path/out/android/so"]
             ndk.abiFilters "${webrtc_abi}" //, 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
+
+        ndkVersion "$ndk_version"
     }
     buildTypes {
         release {

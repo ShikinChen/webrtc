@@ -16,7 +16,7 @@ android {
                 arguments '-DANDROID_TOOLCHAIN=clang', '-DANDROID_STL=c++_shared',
                         "-DWEBRTC_REPO=${webrtc_src}",
                         "-DWEBRTC_BUILD_DIR=${webrtc_out}",
-                        "-DCMAKE_OSX_SYSROOT=${cmake_osx_sysroot}",
+//                        "-DCMAKE_OSX_SYSROOT=${cmake_osx_sysroot}",
                         "-DCMAKE_OSX_DEPLOYMENT_TARGET=${cmake_osx_deployment_target}"
                 cppFlags '-std=c++14'
                 abiFilters "${webrtc_abi}" //, 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
@@ -50,6 +50,8 @@ android {
             path 'CMakeLists.txt'
         }
     }
+
+    ndkVersion "$ndk_version"
 }
 
 dependencies {

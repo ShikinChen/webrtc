@@ -20,6 +20,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <!-- This is a test application that should always be debuggable. -->
     <application
         android:allowBackup="false"
