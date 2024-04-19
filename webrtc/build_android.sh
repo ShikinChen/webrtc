@@ -26,7 +26,7 @@ MIN_BRANCH=4664
 
 sed -i "/strip = /d" $ANDROID_BUILD_PATH
 
-if [ ${BRANCH} -gt ${MIN_BRANCH} ]; then
+if [[ ${BRANCH} -gt ${MIN_BRANCH} ]]; then
   sed -i "/         root_build_dir)/d" $ANDROID_BUILD_PATH
 fi
 
