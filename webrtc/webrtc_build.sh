@@ -26,8 +26,15 @@ fi
 #   cp "$SHELL_PATH/depot_tools_update.sh" "$WEBRTC_SRC/depot_tools_update.sh"
 # fi
 
+OS_TYPE=$(uname)
 
 HOST_IP=$(ifconfig | grep inet | grep -v inet6 | grep -v 127 | cut -d ' ' -f2)
+
+if [ "$OS_TYPE" = "Linux" ]; then
+  HOST_IP=$(ifconfig | grep 'inet ' | grep -v 127 | awk '{print $2}')
+fi
+
+
 HOST_IP=($HOST_IP)
 HOST_IP=${HOST_IP[0]}
 

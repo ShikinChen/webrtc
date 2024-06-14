@@ -30,6 +30,7 @@ if [ -n "$1" ]; then
     fi
   fi
   if [ $1 = "init" ]; then
+    git config --global --add safe.directory /webrtc/depot_tools
     cd ${WEBRTC_PATH} && fetch --nohooks $MIRROR
   else
     cd ${WEBRTC_PATH} && gclient sync -v -f -D --with_branch_heads $ARGS

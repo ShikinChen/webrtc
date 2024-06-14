@@ -2,8 +2,8 @@
 FROM ubuntu:jammy
 LABEL maintainer="shiki"
 
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y
-
 RUN apt-get install -y tzdata
 RUN echo "Asia/Shanghai" > /etc/timezone
 RUN rm -f /etc/localtime    
@@ -26,6 +26,7 @@ RUN apt-get install -y libreadline-dev libsqlite3-dev llvm libncursesw5-dev
 RUN apt-get install -y xz-utils tk-dev libxml2-dev libxmlsec1-dev
 RUN apt-get install -y libffi-dev liblzma-dev
 
+RUN echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
 SHELL ["/bin/bash", "-c"]
 
 RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv
@@ -40,6 +41,7 @@ RUN ~/.pyenv/bin/pyenv global 3.9.17
 RUN ~/.pyenv/versions/3.9.17/bin/pip install install --trusted-host files.pythonhosted.org --trusted-host pypi.org --trusted-host pypi.python.org  dataclasses
 RUN ~/.pyenv/versions/3.9.17/bin/pip install vpython
 RUN ln -s ~/.pyenv/versions/3.9.17/bin/python /usr/bin/python
+
 
 # install webrtc deps
 RUN curl https://chromium.googlesource.com/chromium/src/+/refs/heads/main/build/install-build-deps.py?format=TEXT | base64 -d > install-build-deps.py

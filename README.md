@@ -46,13 +46,13 @@ PROXY_PORT=8118 #代理端口
 最好在容器执行切换[webrct版本](https://chromiumdash.appspot.com/releases?platform=Android)
 ```
 cd src
-git checkout be99ee8f17f93e06c81e3deb4897dfa8253d3211 -b commit_30432
+git checkout -f be99ee8f17f93e06c81e3deb4897dfa8253d3211 -b commit_30432
 //或者切换m84
 git checkout -f branch-heads/4147 -b m84
 //或者切换m124
 git checkout -f branch-heads/6367 -b m124
 //或者根据commit切换
-git checkout 93e9ac6285bceef08e4c44c221ec57e8f7995b2f -b m124
+git checkout -f 93e9ac6285bceef08e4c44c221ec57e8f7995b2f -b m124
 cd ..
 ./gclient_sync.sh
 ```
