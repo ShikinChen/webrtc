@@ -49,10 +49,8 @@ cd src
 git checkout -f be99ee8f17f93e06c81e3deb4897dfa8253d3211 -b commit_30432
 //或者切换m84
 git checkout -f branch-heads/4147 -b m84
-//或者切换m124
-git checkout -f branch-heads/6367 -b m124
 //或者根据commit切换
-git checkout -f 93e9ac6285bceef08e4c44c221ec57e8f7995b2f -b m124
+git checkout -f a18e38fed2307edd6382760213fa3ddf199fa181 -b m126
 cd ..
 ./gclient_sync.sh
 ```
@@ -97,4 +95,8 @@ Studio启动调试,因为默认值直接会保存到手机本地,如果局域网
 
 ```
 ./webrtc_server.sh
+```
+### 赋予当前用户源码文件夹权限
+```
+sudo chown $USER -R webrtc_src
 ```
