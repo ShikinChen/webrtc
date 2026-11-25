@@ -35,8 +35,7 @@ if [ "$OS_TYPE" = "Linux" ]; then
 fi
 
 
-HOST_IP=($HOST_IP)
-HOST_IP=${HOST_IP[0]}
+HOST_IP=$(printf '%s\n' "$HOST_IP" | awk 'NF { print $1; exit }')
 
 BOTO="[Boto]
 proxy = ${HOST_IP}
@@ -46,7 +45,8 @@ if [ -f "$WEBRTC_SRC/.boto" ]; then
   rm "$WEBRTC_SRC/.boto"
 fi
 
-PROXY_SET="--env HTTP_PROXY=http://$HOST_IP:${PROXY_PORT} --env HTTPS_PROXY=http://$HOST_IP:${PROXY_PORT} --dns=8.8.8.8 --dns=8.8.4.4"
+PROXY_URL="http://$HOST_IP:${PROXY_PORT}"
+PROXY_SET="--env HTTP_PROXY=$PROXY_URL --env HTTPS_PROXY=$PROXY_URL --env http_proxy=$PROXY_URL --env https_proxy=$PROXY_URL --dns=8.8.8.8 --dns=8.8.4.4"
 
 if [ -n "$IS_PROXY" ]; then
   if [ $IS_PROXY = "proxy-off" ]; then
@@ -55,13 +55,13 @@ if [ -n "$IS_PROXY" ]; then
   else
     echo "proxy-on"
     if [ "$MIRROR" != "agoralab" ]; then
-      echo $BOTO >> "$WEBRTC_SRC/.boto"
+      printf '%s\n' "$BOTO" >> "$WEBRTC_SRC/.boto"
     fi
   fi
 else
   echo "proxy-on"
   if [ "$MIRROR" != "agoralab" ]; then
-    echo $BOTO >> "$WEBRTC_SRC/.boto"
+    printf '%s\n' "$BOTO" >> "$WEBRTC_SRC/.boto"
   fi
 fi
 docker run --rm $PROXY_SET -v "$WEBRTC_SRC":/webrtc:cached -it webrtc_build
