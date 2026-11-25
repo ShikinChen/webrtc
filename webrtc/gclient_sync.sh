@@ -7,7 +7,7 @@ export http_proxy="${http_proxy:-${HTTP_PROXY:-}}"
 export https_proxy="${https_proxy:-${HTTPS_PROXY:-}}"
 
 if [ -f "$WEBRTC_PATH/.boto" ]; then
-  export NO_AUTH_BOTO_CONFIG=$WEBRTC_PATH/.boto
+  export BOTO_CONFIG="$WEBRTC_PATH/.boto"
 fi
 
 MIRROR=$2
